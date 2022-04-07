@@ -1,0 +1,983 @@
+{
+	"info": {
+		"_postman_id": "4feccf7b-dd2f-4813-ace2-bdd087dec9c0",
+		"name": "01-22  Variables Automation CA Marketing Copy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create New Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 1024B\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Body contains correct keys\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"    pm.response.to.have.header(\"Content-Length\", \"45\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.not.be.error\r",
+							"});\r",
+							"\r",
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"ID\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.unset(\"ID\");\r",
+							"pm.environment.unset(\"COMPANY\")\r",
+							"\r",
+							"\r",
+							"pm.environment.set(\"COMPANY\", \"ART_GAllery\" + new Date().getTime());\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "jfMhkfy-dnCJWMB46uuGU7LC_Csfvy5AlKtE07ZDNyc.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA0VDE1OjQ4OjUzLjg1NloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wNFQxOTo0ODo1My44NTZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"fullName\": {\r\n            \"firstName\": \"{{FN}}\",\r\n            \"lastName\": \"{{LN}}\"\r\n        },\r\n        \"company\": \"{{COMPANY}}\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"310 Central\",\r\n        \"addressLine2\": null,\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"Philadelphia\",\r\n        \"country\": \"USA\",\r\n        \"subdivision\": \"PA\",\r\n        \"zipCode\": \"19122\",\r\n        \"phoneNumber\": \"99999999\",\r\n        \"location\": {\r\n            \"latitude\": 39.9724323,\r\n            \"longitude\": -75.1410235\r\n        }\r\n    },\r\n    \"setAsDefault\": false\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}",
+					"host": [
+						"{{URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Make address default",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"{}\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "apikey"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "jfMhkfy-dnCJWMB46uuGU7LC_Csfvy5AlKtE07ZDNyc.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA0VDE1OjQ4OjUzLjg1NloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wNFQxOTo0ODo1My44NTZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{ID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/default",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"default"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all addresses",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 3000B\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(3000);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"\r",
+							"// Get variable from environment\r",
+							"pm.test(\"Body contains correct Data of created Address\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"ID\"));\r",
+							"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"FN\"));\r",
+							"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"LN\"));\r",
+							"    pm.expect(pm.response.text()).to.include(pm.environment.get(\"COMPANY\"));\r",
+							"\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.not.be.error\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "jfMhkfy-dnCJWMB46uuGU7LC_Csfvy5AlKtE07ZDNyc.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA0VDE1OjQ4OjUzLjg1NloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wNFQxOTo0ODo1My44NTZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": {
+					"raw": "{{URL}}",
+					"host": [
+						"{{URL}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 200ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 3000\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(3000);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Check the Data\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address.fullName.firstName).to.eql(pm.environment.get(\"FN\"));\r",
+							"    pm.expect(jsonData.address.fullName.lastName).to.eql(pm.environment.get(\"LN\"));\r",
+							"    pm.expect(jsonData.address.country).to.eql(\"USA\");\r",
+							"    pm.expect(jsonData.address.city).to.eql(\"Philadelphia\");\r",
+							"    pm.expect(jsonData.address.zipCode).to.eql(\"19122\");\r",
+							"    pm.expect(jsonData.address.company).to.eql(pm.environment.get(\"COMPANY\"));\r",
+							"    pm.expect(jsonData.address.addressLine1).to.eql( \"310 Central\");\r",
+							"   // pm.expect(jsonData.address.addressLine2).to.eql(\"21\");\r",
+							"    //pm.expect(jsonData.address.location.lattitude).to.eql(41.8979317);\r",
+							"    //pm.expect(jsonData.address.location.longitude).to.eql(12.518946)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body should be in the correct format\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address).to.be.a(\"object\");\r",
+							"    pm.expect(jsonData.address.id).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.fullName).to.be.a(\"object\");\r",
+							"    pm.expect(jsonData.address.fullName.firstName).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.fullName.lastName).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.country).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.city).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.zipCode).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.company).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.addressLine1).to.be.a(\"string\");\r",
+							"   //pm.expect(jsonData.address.addressLine2).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.location).to.be.a(\"object\");\r",
+							"   // pm.expect(jsonData.address.location.latitude).to.be.a(\"float\");\r",
+							"   // pm.expect(jsonData.address.location.longitude).to.be.a(\"float\");\r",
+							"    pm.expect(jsonData.isDefaultAddress).to.be.a('boolean');\r",
+							"});\r",
+							"pm.test(\"Check DefaultAdress\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.isDefaultAddress).to.eql(false);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"   // pm.response.to.have.header(\"Content-Length\", \"384\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.not.be.error\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "jfMhkfy-dnCJWMB46uuGU7LC_Csfvy5AlKtE07ZDNyc.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA0VDE1OjQ4OjUzLjg1NloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wNFQxOTo0ODo1My44NTZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"id\": \"769da0fb-5c52-4d8c-9f43-ccd40fe774d2\",\r\n        \"fullName\": {\r\n            \"firstName\": \"IrIrIr\",\r\n            \"lastName\": \"ZhZhZh\"\r\n        },\r\n        \"company\": \"NewCompany1234567\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"310 Master Street\",\r\n        \"addressLine2\": \"21\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"Philadelphia\",\r\n        \"country\": \"USA\",\r\n        \"subdivision\": \"PA\",\r\n        \"zipCode\": \"19122\",\r\n        \"phoneNumber\": \"888888888888888\",\r\n        \"location\": {\r\n            \"latitude\": 39.9724323,\r\n            \"longitude\": -75.1410235\r\n        }\r\n    },\r\n    \"setAsDefault\": false,\r\n    \"fieldMask\": {\r\n        \"paths\": [\r\n            \"fullName.firstName\",\r\n            \"fullName.lastName\",\r\n            \"company\",\r\n            \"addressLine1\",\r\n            \"addressLine2\",\r\n            \"city\",\r\n            \"country\",\r\n            \"subdivision\",\r\n            \"zipCode\",\r\n            \"phoneNumber\",\r\n            \"location.latitude\",\r\n            \"location.longitude\",\r\n            \"setAsDefault\"\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/{{ID}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 1024B\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"   // pm.response.to.have.header(\"Content-Length\", \"2\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.not.be.error\r",
+							"    pm.expect(pm.response.text()).to.include(\"{}\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "jfMhkfy-dnCJWMB46uuGU7LC_Csfvy5AlKtE07ZDNyc.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA0VDE1OjQ4OjUzLjg1NloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wNFQxOTo0ODo1My44NTZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"id\": \"{{ID}}\",\r\n        \"fullName\": {\r\n            \"firstName\": \"{{FN_NEW}}\",\r\n            \"lastName\": \"{{LN_NEW}}\"\r\n        },\r\n        \"company\": \"{{COMPANY_NEW}}\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"310 Central\",\r\n        \"addressLine2\": \"21\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"Philadelphia\",\r\n        \"country\": \"USA\",\r\n        \"subdivision\": \"PA\",\r\n        \"zipCode\": \"19122\",\r\n        \"phoneNumber\": \"888888888888888\",\r\n        \"location\": {\r\n            \"latitude\": 39.9724323,\r\n            \"longitude\": -75.1410235\r\n        }\r\n    },\r\n    \"setAsDefault\": false,\r\n    \"fieldMask\": {\r\n        \"paths\": [\r\n            \"fullName.firstName\",\r\n            \"fullName.lastName\",\r\n            \"company\",\r\n            \"addressLine1\",\r\n            \"addressLine2\",\r\n            \"city\",\r\n            \"country\",\r\n            \"subdivision\",\r\n            \"zipCode\",\r\n            \"phoneNumber\",\r\n            \"location.latitude\",\r\n            \"location.longitude\",\r\n            \"setAsDefault\"\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/{{ID}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get specific Updated address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 3000\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(3000);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"pm.test(\"Check the Data\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address.fullName.firstName).to.eql(pm.environment.get(\"FN_NEW\"));\r",
+							"    pm.expect(jsonData.address.fullName.lastName).to.eql(pm.environment.get(\"LN_NEW\"));\r",
+							"    pm.expect(jsonData.address.country).to.eql(\"USA\");\r",
+							"    pm.expect(jsonData.address.city).to.eql(\"Philadelphia\");\r",
+							"    pm.expect(jsonData.address.zipCode).to.eql(\"19122\");\r",
+							"    pm.expect(jsonData.address.company).to.eql(pm.environment.get(\"COMPANY_NEW\"));\r",
+							"    pm.expect(jsonData.address.addressLine1).to.eql( \"310 Central\");\r",
+							"   // pm.expect(jsonData.address.addressLine2).to.eql(\"21\");\r",
+							"    //pm.expect(jsonData.address.location.lattitude).to.eql(41.8979317);\r",
+							"    //pm.expect(jsonData.address.location.longitude).to.eql(12.518946)\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response body should be in the correct format\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.address).to.be.a(\"object\");\r",
+							"    pm.expect(jsonData.address.id).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.fullName).to.be.a(\"object\");\r",
+							"    pm.expect(jsonData.address.fullName.firstName).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.fullName.lastName).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.country).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.city).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.zipCode).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.company).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.addressLine1).to.be.a(\"string\");\r",
+							"   //pm.expect(jsonData.address.addressLine2).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.address.location).to.be.a(\"object\");\r",
+							"   // pm.expect(jsonData.address.location.latitude).to.be.a(\"float\");\r",
+							"   // pm.expect(jsonData.address.location.longitude).to.be.a(\"float\");\r",
+							"    pm.expect(jsonData.isDefaultAddress).to.be.a('boolean');\r",
+							"});\r",
+							"\r",
+							"    \r",
+							"pm.test(\"Check DefaultAdress\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.isDefaultAddress).to.eql(false);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"    //pm.response.to.have.header(\"Content-Length\", \"384\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.not.be.error\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "GwvjyLXk7OoGvePBQxJaO0DLxMF_fo40LFDcL_s6eMI.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTAyVDE3OjA1OjA3LjgzNloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wMlQyMTowNTowNy44MzZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"id\": \"b04fe7af-f864-45d7-a6a1-4ec94d2c13da\",\r\n        \"fullName\": {\r\n            \"firstName\": \"IrIrIr\",\r\n            \"lastName\": \"ZhZhZh\"\r\n        },\r\n        \"company\": \"NewCompany1234567\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"310 Master Street\",\r\n        \"addressLine2\": \"21\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"Philadelphia\",\r\n        \"country\": \"USA\",\r\n        \"subdivision\": \"PA\",\r\n        \"zipCode\": \"19122\",\r\n        \"phoneNumber\": \"888888888888888\",\r\n        \"location\": {\r\n            \"latitude\": 39.9724323,\r\n            \"longitude\": -75.1410235\r\n        }\r\n    },\r\n    \"setAsDefault\": false,\r\n    \"fieldMask\": {\r\n        \"paths\": [\r\n            \"fullName.firstName\",\r\n            \"fullName.lastName\",\r\n            \"company\",\r\n            \"addressLine1\",\r\n            \"addressLine2\",\r\n            \"city\",\r\n            \"country\",\r\n            \"subdivision\",\r\n            \"zipCode\",\r\n            \"phoneNumber\",\r\n            \"location.latitude\",\r\n            \"location.longitude\",\r\n            \"setAsDefault\"\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/{{ID}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete specific Updated address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 1024B\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(1024);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"    \r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.have.jsonBody({});\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "jfMhkfy-dnCJWMB46uuGU7LC_Csfvy5AlKtE07ZDNyc.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA0VDE1OjQ4OjUzLjg1NloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wNFQxOTo0ODo1My44NTZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"id\": \"769da0fb-5c52-4d8c-9f43-ccd40fe774d2\",\r\n        \"fullName\": {\r\n            \"firstName\": \"IrIrIr\",\r\n            \"lastName\": \"ZhZhZh\"\r\n        },\r\n        \"company\": \"NewCompany1234567\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"310 Master Street\",\r\n        \"addressLine2\": \"21\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"Philadelphia\",\r\n        \"country\": \"USA\",\r\n        \"subdivision\": \"PA\",\r\n        \"zipCode\": \"19122\",\r\n        \"phoneNumber\": \"888888888888888\",\r\n        \"location\": {\r\n            \"latitude\": 39.9724323,\r\n            \"longitude\": -75.1410235\r\n        }\r\n    },\r\n    \"setAsDefault\": false,\r\n    \"fieldMask\": {\r\n        \"paths\": [\r\n            \"fullName.firstName\",\r\n            \"fullName.lastName\",\r\n            \"company\",\r\n            \"addressLine1\",\r\n            \"addressLine2\",\r\n            \"city\",\r\n            \"country\",\r\n            \"subdivision\",\r\n            \"zipCode\",\r\n            \"phoneNumber\",\r\n            \"location.latitude\",\r\n            \"location.longitude\",\r\n            \"setAsDefault\"\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/{{ID}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check deleted  Updated address",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 3000B\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(3000);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains correct values\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"cant_find\", \"address_id: pm.environment.get('ID')\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.be.error\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// JSON parse\r",
+							"pm.test(\"Address ID can not find\", function () {\r",
+							"    var jsonData = JSON.parse(responseBody);\r",
+							"    jsonData.details.cant_find === (\"address_id: address_id: pm.environment.get('ID')\");\r",
+							"});\r",
+							"\r",
+							"//Standart validation test\r",
+							"pm.test(\"Address ID can not find\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.details.cant_find).to.eql(\"address_id: \" + pm.environment.get('ID'));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body should be in the correct format\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.details).to.be.a(\"object\");\r",
+							"    pm.expect(jsonData.details.cant_find).to.be.a(\"string\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "jfMhkfy-dnCJWMB46uuGU7LC_Csfvy5AlKtE07ZDNyc.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA0VDE1OjQ4OjUzLjg1NloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wNFQxOTo0ODo1My44NTZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"address\": {\r\n        \"id\": \"769da0fb-5c52-4d8c-9f43-ccd40fe774d2\",\r\n        \"fullName\": {\r\n            \"firstName\": \"IrIrIr\",\r\n            \"lastName\": \"ZhZhZh\"\r\n        },\r\n        \"company\": \"NewCompany1234567\",\r\n        \"taxInfo\": {\r\n            \"id\": null,\r\n            \"type\": null\r\n        },\r\n        \"addressLine1\": \"310 Master Street\",\r\n        \"addressLine2\": \"21\",\r\n        \"street\": {\r\n            \"name\": null,\r\n            \"number\": null\r\n        },\r\n        \"city\": \"Philadelphia\",\r\n        \"country\": \"USA\",\r\n        \"subdivision\": \"PA\",\r\n        \"zipCode\": \"19122\",\r\n        \"phoneNumber\": \"888888888888888\",\r\n        \"location\": {\r\n            \"latitude\": 39.9724323,\r\n            \"longitude\": -75.1410235\r\n        }\r\n    },\r\n    \"setAsDefault\": false,\r\n    \"fieldMask\": {\r\n        \"paths\": [\r\n            \"fullName.firstName\",\r\n            \"fullName.lastName\",\r\n            \"company\",\r\n            \"addressLine1\",\r\n            \"addressLine2\",\r\n            \"city\",\r\n            \"country\",\r\n            \"subdivision\",\r\n            \"zipCode\",\r\n            \"phoneNumber\",\r\n            \"location.latitude\",\r\n            \"location.longitude\",\r\n            \"setAsDefault\"\r\n        ]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/{{ID}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Address again",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 300ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(300);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 500ms\", () => {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response size is less than 3000B\", function () {\r",
+							"    pm.expect(pm.response.responseSize).to.be.below(3000);\r",
+							"});\r",
+							"\r",
+							"if  (responseCode.code  === 200){ \r",
+							"   tests [\"Response code is 200\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 400){ \r",
+							"   tests [\"Bad request, RC is 400\"] = true;\r",
+							"}\r",
+							"else if  (responseCode.code  === 401){ \r",
+							"   tests [\"Unathorized, RC is 401\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 403){ \r",
+							"   tests [\"Forbidden, RC is 403\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 404){ \r",
+							"   tests [\"Not Found, RC is 404\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 431){ \r",
+							"   tests [\"Request Header Fields Too Large, RC is 431\"] = false;\r",
+							"}\r",
+							"else if  (responseCode.code  === 408){ \r",
+							"   tests [\"Request Timeout, RC is 408\"] = false;\r",
+							"}\r",
+							"else   { \r",
+							"   tests [\"Something went wrong. Check response body\"] = false;\r",
+							"}\r",
+							"\r",
+							"pm.test(\"Header is present\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json;charset=utf-8\" );\r",
+							"    pm.response.to.have.header(\"Server\", \"Pepyaka/1.19.10\");\r",
+							"    pm.response.to.have.header(\"Connection\", \"keep-alive\");\r",
+							"    pm.response.to.have.header(\"X-Content-Type-Options\", \"nosniff\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Body contains correct values\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"cant_find\", \"address_id: pm.environment.get('ID')\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be Ok to process\", function () {\r",
+							"    pm.response.to.be.error\r",
+							"});\r",
+							"\r",
+							"\r",
+							"// JSON parse\r",
+							"//pm.test(\"Address ID can not find\", function () {\r",
+							"  //  var jsonData = JSON.parse(responseBody);\r",
+							"    //jsonData.datails.cant_find === (\"address_id: \" + pm.environment.get('ID'));\r",
+							"//});\r",
+							"\r",
+							"//Standart validation test\r",
+							"pm.test(\"Address ID can not find\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.details.cant_find).to.eql(\"address_id: \" + pm.environment.get('ID'));\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response body should be in the correct format\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.be.a(\"string\");\r",
+							"    pm.expect(jsonData.details).to.be.a(\"object\");\r",
+							"    //pm.expect(jsonData.datails.cant_find).to.be.a(\"string\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"warning": "This is a duplicate header and will be overridden by the Authorization header generated by Postman.",
+						"key": "Authorization",
+						"value": "GwvjyLXk7OoGvePBQxJaO0DLxMF_fo40LFDcL_s6eMI.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTAyVDE3OjA1OjA3LjgzNloiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wMlQyMTowNTowNy44MzZaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{URL}}/{{ID}}",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"{{ID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "LdFeYOoaD4hT8tKU1q7mIiPvdVlw3ZMCODvaqqt5mys.eyJpbnN0YW5jZUlkIjoiZjQ2Y2Q1MDItZjcyZi00NGY3LTk2MzgtNWRhMWRlYjBiNGU3IiwiYXBwRGVmSWQiOiIxNTA1Yjc3NS1lODg1LWViMWItYjY2NS0xZTQ4NWQ5YmY5MGUiLCJtZXRhU2l0ZUlkIjoiMjhiNzkzZDYtNTQyNC00MDU4LTgwNDktMDI2YTRkYjAyODJmIiwic2lnbkRhdGUiOiIyMDIyLTA0LTA3VDIxOjMzOjI3LjM1OVoiLCJ1aWQiOiJmZGQ0MWI3Yi04MGExLTQwMDEtOTJhOS01ZDYzMTUxODk5MDYiLCJkZW1vTW9kZSI6ZmFsc2UsImFpZCI6IjJiZjAyNzg3LWRjMWQtNDc2NC04YzU1LTI1YTI1NWFkZTk1NCIsImJpVG9rZW4iOiJkY2RiNDZkNC1hMzBiLTA0YWYtMTY3MS01ZmNiOTMwMDljYzgiLCJzaXRlT3duZXJJZCI6ImY5MTRmMTFjLWFhYjMtNDUyNy04ZDRlLWJhYjc2MjE0M2E2MCIsImV4cGlyYXRpb25EYXRlIjoiMjAyMi0wNC0wOFQwMTozMzoyNy4zNTlaIiwiaGFzVXNlclJvbGUiOmZhbHNlfQ",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
